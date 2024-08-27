@@ -109,6 +109,12 @@ public:
         if (nullptr != curl_)   curl_easy_setopt(curl_, CURLOPT_PROXY, proxy_url_.c_str());
     }
 
+    /// Enables or disables SSL certificate verification for this session.
+    /// This may be useful when using HTTPS with self-signed certificates, for instance.
+    void enableSSLVerify(bool status) {
+        if (nullptr != curl_)   curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, status ? 1L : 0L);
+    }
+
     void SetBody(const std::string& data);
     Response Get();
     Response Post();
@@ -355,6 +361,9 @@ public:
     Slacking& operator=(const Slacking&) = delete;
 
     void set_proxy(const std::string& url) { session_.SetProxyUrl(url); }
+    /// Enables or disables SSL certificate verification for this session.
+    /// This may be useful when using HTTPS with self-signed certificates, for instance.
+    void enableSSLVerify(bool status) { session_.enableSSLVerify(status); }
 
 
     void change_token(const std::string& token) { token_ = token; };
